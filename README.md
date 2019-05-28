@@ -261,7 +261,7 @@ dairy_data %>%
 
 ![](README_files/figure-markdown_github/unnamed-chunk-10-2.png)
 
-By visualizing the data it easier to see the trends that they contain. With a glance you can see that `butter` usually commands the highest price and that `dry_milk` has experienced a steep price drop that has sustained over the past 5 years. It is also easy to see that `dry_milk` exhibits the highest fluctuations in weekly sales amounts.
+By visualizing the data it is easier to see the trends that they contain. With a glance you can see that `butter` usually commands the highest price and that `dry_milk` has experienced a steep price drop that has sustained over the past 5 years. It is also easy to see that `dry_milk` exhibits the highest fluctuations in weekly sales amounts.
 
 Forecast Preparation
 --------------------
