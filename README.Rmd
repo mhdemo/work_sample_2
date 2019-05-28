@@ -333,6 +333,7 @@ avg_dairy_tbl %>%
   facet_wrap(~product)
 
 ```
+
 I've chosen to summarize the error of each product for the forecasted months by computing their MAPE(mean absolute percentage error) and RMSE. The two error metrics aren't necessarily comparable between each other, but they can be used to identify which products that the chosen model perform better on. It's clear that the model is less accurate at predicting price movements for `cheese_barrel` sales. This could be remedied by using a different model for this specific product.
 
 ##Conclusion
