@@ -299,7 +299,7 @@ A good way to verify that the transformation was performed successfully is to vi
 ``` r
 avg_dairy_data %>%
   ggplot(aes(sale_date, avg_weighted_price, col = factor(product))) + geom_line() + 
-  labs(title = "Weekly Price Data", x = "Sale Date", y = "Avg Price", legend = "Product") + 
+  labs(title = "Avg Monthly Price Data", x = "Sale Date", y = "Avg Price", legend = "Product") + 
   theme(plot.title = element_text(hjust = 0.5)) + scale_color_discrete(name = "Product")
 ```
 
@@ -308,7 +308,7 @@ avg_dairy_data %>%
 ``` r
 avg_dairy_data %>%
   ggplot(aes(sale_date, avg_sales, col = factor(product))) + geom_line() + 
-  labs(title = "Weekly Price Data", x = "Sale Date", y = "Avg Sales", legend = "Product") + 
+  labs(title = "Avg Monthly Sales Data", x = "Sale Date", y = "Avg Sales", legend = "Product") + 
   theme(plot.title = element_text(hjust = 0.5)) + scale_color_discrete(name = "Product")
 ```
 
