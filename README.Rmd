@@ -11,20 +11,19 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Introduction
+## Introduction
 This will be used as a sample to display some of my analytical capabilities in R. This project will demonstrate how useful R can be to perform analysis that is easy to reproduce and communicate. This is by no means an exhaustive demonstration of my proficiency with R, but should highlight common data analysis functions that I perform regularly.
 
-##Analysis Goals
+## Analysis Goals
 Forecasts can be useful tools when trying to prepare for future events. In this work sample I will demonstrate some of my forecasting capabilities by analyzing U.S. dairy transactional data. I will begin the process by examining, cleaning, and transforming the data. Next I will perform some exploratory analysis to get a better understanding of the data. Last up I will run two models on the data, determine which one performs the best for this demonstration, and use that model to forecast 1 month price movements across all dairy products. 
 
-##R Shiny Dashboard
-Below is the link for the dashboard application that I created utilizing R Shiny. This application allows anyone to examine the data without having to install R or any additional applications.
-(https://mhdemo7.shinyapps.io/DairyAnalysis/)
+## R Shiny Dashboard
+Below is the link for the dashboard application that I created utilizing R Shiny. This application allows anyone to examine the data without having to install R or any additional applications. [R Shiny Dashboard](https://mhdemo7.shinyapps.io/DairyAnalysis/)
 
-##Data Sources
+## Data Sources
 The data used for this work sample can be found at the USDA [website.](https://mpr.datamart.ams.usda.gov/menu.do?path=Products\Dairy\All%20Dairy)
 
-##Data Import
+## Data Import
 Loading necessary packages for analysis.
 ```{r, message = FALSE}
 library(readxl)
@@ -45,8 +44,8 @@ dry_milk <- read_csv("Raw Data/Datamart-Export_DY_WK100-Nonfat Dry Milk Prices a
 dry_whey <- read_csv("Raw Data/Datamart-Export_DY_WK100-Dry Whey Prices and Sales_20190407_042246.csv")
 ```
 
-##Data Wrangling/Cleansing
-###Data Inspection
+## Data Wrangling/Cleansing
+### Data Inspection
 In order to begin the wrangling/cleansing process I need to know the characteristics of the data.
 
 ```{r}
@@ -91,7 +90,7 @@ dairy_tables %>%
 rm(butter, cheese_barrel, cheese_block, dairy_tables, dry_milk, dry_whey, i)
 ```
 
-###Data Type Updates
+### Data Type Updates
 
 Now that all of the data are in one table I can begin the process of updating the column headers and making any necessary class changes.
 
@@ -123,7 +122,7 @@ dairy_data %>%
 
 With that out of the way I can move to perform some exploratory data analysis on the data.
 
-##EDA
+## EDA
 First up is a summary of the transformed data.
 
 ```{r}
@@ -131,7 +130,7 @@ dairy_data %>%
   summary()
 ```
 
-###Outliers
+### Outliers
 The `weighted_prices` column doesn't appear to contain any extreme outliers, but the `sales` column does appear to contain some extreme values when comparing the max value to 3 x IQR. Digging deeper shows that those extreme values are associated with the `dry_milk` product. Calculating the 3 x IQR metric again while filtering only for the `dry_milk` product still shows that the max value can be classified as extreme. I will keep these values in mind when assessing the results of model. 
 
 ```{r}
@@ -152,7 +151,7 @@ dairy_data %>%
   pull(sales) %>%
   IQR() * 3
 ```
-###Visualization
+### Visualization
 Next up is visualizing the data in its current form.
 
 ```{r}
@@ -170,8 +169,8 @@ dairy_data %>%
 
 By visualizing the data it is easier to see the trends that they contain. With a glance you can see that `butter` usually commands the highest price and that `dry_milk` has experienced a steep price drop that has sustained over the past 5 years. It is also easy to see that `dry_milk` exhibits the highest fluctuations in weekly sales amounts.
 
-##Forecast Preparation
-###Time Period Transformation
+## Forecast Preparation
+### Time Period Transformation
 Before I can start any of the forecasting process I need to transform the data to match the forecast time period. The data are currently described in a weekly format so they will need to be changed to a monthly format. I have chosen to utilize the sales weighted average price and the average sales for the monthly values.
 
 ```{r}
@@ -204,7 +203,7 @@ avg_dairy_data %>%
 
 ```
 
-###ts Object Transformation
+### ts Object Transformation
 Now that the data is in a monthly format it needs to be converted into a ts object. ts objects are necessary to use functions from the `forecast` package.
 
 ```{r}
@@ -229,7 +228,7 @@ rm(avg_dairy_data, avg_dairy_data_spread, dairy_data)
 
 ```
 
-##Forecast Comparison
+## Forecast Comparison
 There are two classes of forecast models that I am looking to compare: ARIMA(autoregressive integrated moving average) and ETS(exponential smoothing) models. I want to see how these forecast methods perform for each dairy product over varying forecast horizons. I will use for loops to automate the process of testing the forecasts methods. I will be using the RMSE(root mean squared error) metric for this comparison and evaluating the models over a 1 to 8 month forecast horizon. 
 
 ```{r}
@@ -278,7 +277,7 @@ model_results %>%
 
 Visualizing the model results allow me to see that the ARIMA models performs better for most of the dairy products, where the forecast horizon is less than 6 months. The ETS models appear to perform better for forecast further into the future. There are other methods to evaluate the performance of a forecast model but this will work for this exercise. Given the goals of this work sample I will choose to utilize the ARIMA model output from the `auto.arima()` function.
 
-##Forecast Application
+## Forecast Application
 Now that I know what type of model I would like to use I can apply it to the data that I currently have. I will revisit this dataset in the future, but for now I will backtest the data in 1 month increments. This will allow me to simulate how the model would perform when forecasting for new prices. To accomplish this I will create for loops similar to the ones that I used to evaluate the models’ performances. This time I will restrict my forecast horizon to 1 and record the predictions made by the model rather than the error metric. I have also chosen to convert the `avg_dairy_ts` back to a tibble format so that I can graph the final results using `ggplot`.
 
 ```{r}
@@ -341,5 +340,5 @@ avg_dairy_tbl %>%
 
 I've chosen to summarize the error of each product for the forecasted months by computing their MAPE(mean absolute percentage error) and RMSE. The two error metrics aren't necessarily comparable between each other, but they can be used to identify which products that the chosen model perform better on. It's clear that the model is less accurate at predicting price movements for `cheese_barrel` sales. This could be remedied by using a different model for this specific product.
 
-##Conclusion
+## Conclusion
 The forecasting tools within R make it easy to create, test, and examine models for predicting future outcomes. Although I stopped with a solution that utilizes the same model for each dairy product, there are many ways to that this script could be altered to better suit potential business needs. I hope that this sample has demonstrated my abilities not only with forecasting in R, but also the common tasks of data cleansing, wrangling, and visualization needed to perform and communicate any type of analysis.
