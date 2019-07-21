@@ -17,6 +17,10 @@ This will be used as a sample to display some of my analytical capabilities in R
 ##Analysis Goals
 Forecasts can be useful tools when trying to prepare for future events. In this work sample I will demonstrate some of my forecasting capabilities by analyzing U.S. dairy transactional data. I will begin the process by examining, cleaning, and transforming the data. Next I will perform some exploratory analysis to get a better understanding of the data. Last up I will run two models on the data, determine which one performs the best for this demonstration, and use that model to forecast 1 month price movements across all dairy products. 
 
+##R Shiny Dashboard
+Below is the link for the dashboard application that I created utilizing R Shiny. This application allows anyone to examine the data without having to install R or any additional applications.
+(https://mhdemo7.shinyapps.io/DairyAnalysis/)
+
 ##Data Sources
 The data used for this work sample can be found at the USDA [website.](https://mpr.datamart.ams.usda.gov/menu.do?path=Products\Dairy\All%20Dairy)
 
